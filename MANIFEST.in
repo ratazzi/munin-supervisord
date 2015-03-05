@@ -1,0 +1,1 @@
+recursive-include munin_supervisord *.py
