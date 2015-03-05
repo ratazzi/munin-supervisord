@@ -66,13 +66,13 @@ class MuninSupervisordProcessStatsPlugin(MuninPlugin):
         transport = supervisor.xmlrpc.SupervisorTransport(None, None, serverurl=self.envGet('url'))
         proxy = xmlrpclib.ServerProxy('http://127.0.0.1', transport=transport)
         # print proxy.supervisor.getState()
-        self.identity = '{}_{}'.format(proxy.supervisor.getIdentification(), proxy.supervisor.getPID())
+        self.identity = '{0}_{1}'.format(proxy.supervisor.getIdentification(), proxy.supervisor.getPID())
         self.entries = proxy.supervisor.getAllProcessInfo()
         self._stats = defaultdict(dict)
 
         for (graph_name, graph_title, graph_info, graph_vlabel, graph_draw, graph_type, graph_args) in graphs:
             if self.graphEnabled(graph_name):
-                graph = MuninGraph('Supervisord - {}'.format(graph_title),
+                graph = MuninGraph('Supervisord - {0}'.format(graph_title),
                                    self._category, info=graph_info, vlabel=graph_vlabel, args=graph_args)
 
                 for entry in self.entries:
@@ -118,7 +118,7 @@ class MuninSupervisordProcessStatsPlugin(MuninPlugin):
                 # num connections
                 try:
                     if self.graphEnabled('supervisord_processes_num_connections'):
-                        num_connections = len(p.get_connections())
+                        num_connections = len(p.connections())
                         self._stats['supervisord_processes_num_connections'][entry['name']] = num_connections
                 except psutil.AccessDenied:
                     pass
